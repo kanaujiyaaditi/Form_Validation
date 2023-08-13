@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 
 //Form data stored in varaibles
 if (empty($_POST['Name'])) {
-    $errMsg = "Please Enter Name to Proceed";
+    $errMsg = "Error! You didn't enter the Name.";
     echo $errMsg;
 } else {
     $name = $_POST['Name'];
@@ -44,7 +44,7 @@ if (empty($_POST['Name'])) {
                     echo $ErrEmail;
                 } else {
                     $pattern =
-                        '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^';
+                        '^[_a-z0-9-]+(\.[_a-z0-9-]+)@[a-z0-9-]+(\.[a-z0-9-]+)(\.[a-z]{2,3})$^';
 
                     $email = $_POST['Email'];
                     if (!preg_match($pattern, $email)) {
@@ -62,8 +62,6 @@ if (empty($_POST['Name'])) {
                             } else {
                                 $mess = $_POST['area'];
                                 $ip_address = $_SERVER['REMOTE_ADDR'];
-
-                                //insert query
                                 $sql = "INSERT INTO contact_form (F_Name, Phone_No, E_mail, Subject,Message,IP_Address) VALUES ('$name', '$number', '$email','$sub','$mess','$ip_address')";
                                 //MAil Functionality Added
                                 $info =
@@ -100,8 +98,7 @@ if (empty($_POST['Name'])) {
 
                                 $mail->send();
                                 echo 'Mail has been sent successfully!';
-                                echo '<br><br><br><br><br><br><br><br><b>Form submitted successfully. Thank you!</b>';
-
+								
                             }
                         }
                     }
@@ -111,8 +108,21 @@ if (empty($_POST['Name'])) {
     }
 }
 
+// Insert data into database
 
-$conn->close();
+if ($conn->query($sql) === true) {
+    // Send email notification
+    $to = 'jaimehrotra02@gmail.com';
+    $subject = 'New Contact Form Submission';
+    $message = "Name: $name\nEmail: $email\nPhoneNo: $number";
+    $headers = "From: $email";
+
+    mail($to, $subject, $message, $headers);
+
+    echo '<br><br><br><br><br><br><br><br> <b>Form submitted successfully. Thank you!</b>';
+} else {
+    echo 'Error: ' . $sql . '<br>' . $conn->error;
+}$conn->close();
 ?>
 
 
