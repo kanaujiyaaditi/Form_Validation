@@ -1,0 +1,32 @@
+.main{
+    /* background-color: rgb(153, 153, 194); */
+    align-items: center;
+    width: 40%;
+    margin: auto;
+    margin-top: 10%;
+}
+
+input{
+    float: right;
+    width: 70%;
+}
+label{
+    width: 200px;
+}
+textarea{
+    float: right;
+    width: 70%;
+}
+
+.btn{
+    cursor: pointer;
+    margin: 20px 10%;
+    background-color: rgb(133, 170, 240);
+    border: none;
+    border-radius: 3px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    size: 30%;
+}
+
+
